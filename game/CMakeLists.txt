@@ -10,6 +10,7 @@ add_executable(MyPlatformerGame
 
 target_include_directories(MyPlatformerGame
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../engine/include
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include          #Game Headers   
 )
 
 target_link_libraries(MyPlatformerGame PRIVATE Engine)
