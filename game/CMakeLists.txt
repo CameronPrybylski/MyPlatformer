@@ -5,6 +5,7 @@ add_executable(MyPlatformerGame
     src/main.cpp
     src/Level.cpp
     src/Player.cpp
+    src/Obstacle.cpp
     # Add your game source files here
 )
 

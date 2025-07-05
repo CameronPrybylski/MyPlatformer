@@ -1,21 +1,18 @@
 #pragma once
+
 #include <Engine/Scene/GameObject.h>
 
-class Player : public GameObject {
+class Obstacle : public GameObject {
 
 public:
-    Player();
-    ~Player();
+    Obstacle();
+    ~Obstacle();
 
     void OnEvent(const Input& input) override;
     void Update(float dt) override;
     void Render(Renderer& renderer, glm::mat4 projection) override;
 
-    void Jump();
-
     //glm::vec3 velocity{0.0f};
-    glm::vec3 gravity{0.0f, -981.0f, 0.0f};
 
-    bool jumping;
 
 };
