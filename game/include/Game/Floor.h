@@ -2,17 +2,13 @@
 
 #include <Engine/Scene/GameObject.h>
 
-class Obstacle : public GameObject {
+class Floor : public GameObject {
 
 public:
-    Obstacle(glm::vec3 position, glm::vec3 scale, glm::vec3 velocity, bool isStatic);
-    ~Obstacle();
-
+    Floor();
+    ~Floor();
     void OnEvent(const Input& input) override;
     void Update(float dt) override;
     void Render(Renderer& renderer, glm::mat4 projection) override;
-
-    //glm::vec3 velocity{0.0f};
-
 
 };
