@@ -42,13 +42,6 @@ void Player::OnEvent(const Input& input)
 
 void Player::Update(const Input& input, float dt)
 {
-    //std::cout << rigidBody.velocity.y << std::endl;   
-    
-    //std::cout << "Player x velocity " << rigidBody.velocity.x << std::endl;
-    //std::cout << "Player y velocity " << rigidBody.velocity.y << std::endl;
-    //std::cout << "Player y position " << transform.position.y << std::endl;
-
-    
     if(rigidBody.velocity.y == 0 && jumping)
     {
         jumping = false;
