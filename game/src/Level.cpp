@@ -6,7 +6,8 @@
 
 Level::Level()
 {
-    std::shared_ptr<GameObject> player = std::make_shared<Player>();
+    player = std::make_shared<Player>();
+    //std::shared_ptr<GameObject> player1 = player;
     /*
     transform.position = {750.0f, 25.0f, 0.0f};
     transform.scale = {50.0f, 50.0f, 0.0f};
@@ -22,7 +23,9 @@ Level::Level()
     AddObject("obstacle_1", obstacle);
     AddObject("obstacle_2", obstacle2);
     AddObject("floor", floor);
-    SetOrthoProjMat(0.0f, 800.0f, 0.0f, 800.0f, -1.0f, 1.0f);
+    SetOrthoProjMat(0.0f, 1067.0f, 0.0f, 800.0f, -1.0f, 1.0f);
+    leftScreenEdge = 0.0f;
+    rightScreenEdge = 1067.0f;
 }
 
 Level::Level(std::unordered_map<std::string, std::shared_ptr<GameObject>> objects)
@@ -48,7 +51,7 @@ void Level::OnEvent(const Input &input)
     }
 }
 
-void Level::OnUpdate(PhysicsSystem &physics, float dt)
+void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
 {
     
     for(auto& obj : objectList)
@@ -73,8 +76,32 @@ void Level::OnUpdate(PhysicsSystem &physics, float dt)
             }            
         }
     }
+    //std::shared_ptr<GameObject> player = objectMap["player"];
+    if(player->alive == false)
+    {
+        gameOver = true;
+    }
+
+    UpdateCamera();
+
     for(auto& obj : objectList)
     {
-        obj->Update(dt);
+        obj->Update(input, dt);
+    }
+}
+
+void Level::UpdateCamera()
+{
+    if(player->transform.position.x >= rightScreenEdge - 300.0f)
+    {
+        camera.position.x = camera.position.x + std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
+        rightScreenEdge += std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
+        leftScreenEdge  += std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
+    }
+    if(player->transform.position.x <= leftScreenEdge + 300.0f)
+    {
+        camera.position.x = camera.position.x - std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
+        rightScreenEdge -= std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
+        leftScreenEdge  -= std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
     }
 }

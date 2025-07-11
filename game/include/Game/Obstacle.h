@@ -9,8 +9,8 @@ public:
     ~Obstacle();
 
     void OnEvent(const Input& input) override;
-    void Update(float dt) override;
-    void Render(Renderer& renderer, glm::mat4 projection) override;
+    void Update(const Input& input, float dt) override;
+    void Render(Renderer& renderer, glm::mat4 projection, const Camera& camera) override;
 
     //glm::vec3 velocity{0.0f};
 

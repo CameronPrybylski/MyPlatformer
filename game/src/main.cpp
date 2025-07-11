@@ -10,7 +10,7 @@ int main()
     //Engine engine;
     Application app;
     
-    if(!app.Create("Game", 800, 800)){
+    if(!app.Create("Game", 1067, 800)){
         std::cout << "Error Creating Engine" << std::endl;
     }
     else{

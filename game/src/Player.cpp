@@ -4,7 +4,7 @@ Player::Player()
 {
     mesh = AssetManager::GetMesh("quadMesh");
     shaderName = "objectShader";
-    transform.position = {75.0f, 25.0f, 0.0f};
+    transform.position = {150.0f, 25.0f, 0.0f};
     transform.scale = {50.0f, 50.0f, 50.0f};
     rigidBody.isStatic = false;
 }
@@ -16,8 +16,6 @@ Player::~Player()
 
 void Player::OnEvent(const Input& input)
 {
-    std::string keys[4] = {"W", "A", "S", "D"};
-
     if(input.IsKeyDown("D") && !jumping)
     {
         rigidBody.velocity.x = 300.0f;
@@ -42,7 +40,7 @@ void Player::OnEvent(const Input& input)
 
 }
 
-void Player::Update(float dt)
+void Player::Update(const Input& input, float dt)
 {
     //std::cout << rigidBody.velocity.y << std::endl;   
     
@@ -54,20 +52,21 @@ void Player::Update(float dt)
     if(rigidBody.velocity.y == 0 && jumping)
     {
         jumping = false;
-        rigidBody.velocity.x = 0;
+        if(!(input.IsKeyDown("D") || input.IsKeyDown("A")))
+        {
+            rigidBody.velocity.x = 0;
+        }
     }if(transform.position.y >= 800)
     {
         transform.position.y = 800.0f;
-    }if(transform.position.x < 0.0f){
-        transform.position.x = 0.0f;
-    }if(transform.position.x > 800.0f){
-        transform.position.x = 800.0f;
+    }if(transform.position.y < 0.0f){
+        alive = false;
     }
 }
 
-void Player::Render(Renderer& renderer, glm::mat4 projection)
+void Player::Render(Renderer& renderer, glm::mat4 projection, const Camera& camera)
 {
-    renderer.DrawQuad(*mesh, transform, AssetManager::GetShader(shaderName), projection, {1.0f, 0.0f, 1.0f, 1.0f});
+    renderer.DrawQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), projection, {1.0f, 0.0f, 1.0f, 1.0f});
 }
 
 void Player::Jump()
