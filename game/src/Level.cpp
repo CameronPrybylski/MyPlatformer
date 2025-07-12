@@ -4,7 +4,7 @@
 #include <Game/Floor.h>
 
 
-Level::Level()
+Level::Level(float screenWidth, float screenHeight)
 {
     player = std::make_shared<Player>();
     //std::shared_ptr<GameObject> player1 = player;
@@ -23,10 +23,10 @@ Level::Level()
     AddObject("obstacle_1", obstacle);
     AddObject("obstacle_2", obstacle2);
     AddObject("floor", floor);
-    camera.SetOrthoProjMat(0.0f, 1067.0f, 0.0f, 800.0f, -1.0f, 1.0f);
-    camera.SetVP();
+    camera.Create(0.0f, screenWidth, 0.0f, screenHeight, -1.0f, 1.0f);
+    
     leftScreenEdge = 0.0f;
-    rightScreenEdge = 1067.0f;
+    rightScreenEdge = screenWidth;
 }
 
 Level::Level(std::unordered_map<std::string, std::shared_ptr<GameObject>> objects)
@@ -40,6 +40,11 @@ Level::Level(std::unordered_map<std::string, std::shared_ptr<GameObject>> object
 }
 
 Level::~Level()
+{
+
+}
+
+void Level::LoadLevel(std::string filepath)
 {
 
 }
@@ -126,10 +131,15 @@ void Level::UpdateCamera()
          leftScreenEdge > 0.0f
         ))
     {
-        camera.viewPosition.x += playerPositionChangeX;
+        glm::vec3 cameraPostion = camera.GetPosition();
+        cameraPostion += glm::vec3(playerPositionChangeX, 0.0f, 0.0f);
+        camera.SetPosition(cameraPostion);
+        camera.SetViewMatrix();
+        camera.SetVP();
+        
         rightScreenEdge += playerPositionChangeX;
         leftScreenEdge += playerPositionChangeX;
-        camera.SetVP();
+        
         //camera.position.x += std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
         //rightScreenEdge   += std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
         //leftScreenEdge    += std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
