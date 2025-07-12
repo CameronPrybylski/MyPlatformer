@@ -10,7 +10,7 @@ public:
 
     void OnEvent(const Input& input) override;
     void Update(const Input& input, float dt) override;
-    void Render(Renderer& renderer, glm::mat4 projection, const Camera& camera) override;
+    void Render(Renderer& renderer, const Camera& camera) override;
 
     //glm::vec3 velocity{0.0f};
 

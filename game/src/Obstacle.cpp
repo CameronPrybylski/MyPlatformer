@@ -22,7 +22,7 @@ void Obstacle::Update(const Input& input, float dt)
 {
     //transform.position.x += rigidBody.velocity.x * dt;
     //std::cout << rigidBody.velocity.x << std::endl;
-    if(transform.position.x < 0.0f)
+    if(transform.position.x - transform.scale.x / 2 < 0.0f)
     {
         rigidBody.velocity.x *= -1;
     }
@@ -32,7 +32,7 @@ void Obstacle::Update(const Input& input, float dt)
     }
 }
 
-void Obstacle::Render(Renderer &renderer, glm::mat4 projection, const Camera& camera)
+void Obstacle::Render(Renderer &renderer, const Camera& camera)
 {
-    renderer.DrawQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), projection, {1.0, 0.0f, 0.0f, 1.0f});
+    renderer.DrawQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), {1.0, 0.0f, 0.0f, 1.0f});
 }

@@ -7,6 +7,7 @@ Player::Player()
     transform.position = {150.0f, 25.0f, 0.0f};
     transform.scale = {50.0f, 50.0f, 50.0f};
     rigidBody.isStatic = false;
+    hp = 3;
 }
 
 Player::~Player()
@@ -16,18 +17,18 @@ Player::~Player()
 
 void Player::OnEvent(const Input& input)
 {
-    if(input.IsKeyDown("D") && !jumping)
+    if(input.IsKeyDown("D") && !jumping && !hit)
     {
         rigidBody.velocity.x = 300.0f;
     }
-    else if(input.IsKeyDown("A") && !jumping)
+    else if(input.IsKeyDown("A") && !jumping && !hit)
     {
         rigidBody.velocity.x = -300.0f;
     }
     else if(!jumping){
         rigidBody.velocity.x = 0;
     }
-    if(input.IsKeyDown("SPACE") && !jumping)
+    if(input.IsKeyDown("SPACE") && !jumping && !hit)
     {
         jumping = true;
         Jump();
@@ -49,20 +50,33 @@ void Player::Update(const Input& input, float dt)
         {
             rigidBody.velocity.x = 0;
         }
+        hit = false;
     }if(transform.position.y >= 800)
     {
         transform.position.y = 800.0f;
     }if(transform.position.y < 0.0f){
         alive = false;
     }
+    if(transform.position.x - transform.scale.x / 2 < 0.0f){
+        transform.position.x = 0.0f + transform.scale.x / 2;
+    }
 }
 
-void Player::Render(Renderer& renderer, glm::mat4 projection, const Camera& camera)
+void Player::Render(Renderer& renderer, const Camera& camera)
 {
-    renderer.DrawQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), projection, {1.0f, 0.0f, 1.0f, 1.0f});
+    renderer.DrawQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), {1.0f, 0.0f, 1.0f, 1.0f});
 }
 
 void Player::Jump()
 {
     rigidBody.velocity = {rigidBody.velocity.x, 700.0f, 0.0f};
+}
+
+void Player::Hit(float dt)
+{
+    rigidBody.velocity.x *= -1;
+    jumping = true;
+    hit = true;
+    hp -= dt;
+    Jump();
 }
