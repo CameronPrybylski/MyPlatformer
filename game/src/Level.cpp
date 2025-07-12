@@ -24,7 +24,7 @@ Level::Level()
     AddObject("obstacle_2", obstacle2);
     AddObject("floor", floor);
     camera.SetOrthoProjMat(0.0f, 1067.0f, 0.0f, 800.0f, -1.0f, 1.0f);
-    camera.SetPV();
+    camera.SetVP();
     leftScreenEdge = 0.0f;
     rightScreenEdge = 1067.0f;
 }
@@ -69,6 +69,10 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     if(player->alive == false)
     {
         gameOver = true;
+    }
+    if(gameOver)
+    {
+        EndScene("gameOver");
     }
 }
 
@@ -125,7 +129,7 @@ void Level::UpdateCamera()
         camera.viewPosition.x += playerPositionChangeX;
         rightScreenEdge += playerPositionChangeX;
         leftScreenEdge += playerPositionChangeX;
-        camera.SetPV();
+        camera.SetVP();
         //camera.position.x += std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
         //rightScreenEdge   += std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
         //leftScreenEdge    += std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);

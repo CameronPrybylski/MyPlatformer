@@ -4,6 +4,7 @@ project(MyPlatformerGame)
 add_executable(MyPlatformerGame
     src/main.cpp
     src/Level.cpp
+    src/GameOver.cpp
     src/Player.cpp
     src/Obstacle.cpp
     src/Floor.cpp
