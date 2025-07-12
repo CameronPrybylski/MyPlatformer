@@ -29,14 +29,16 @@ int main()
         object->transform.scale = scale;
         */
         //std::unique_ptr<Scene> basicScene = std::make_unique<Scene>();
-        std::shared_ptr<Scene> level = std::make_shared<Level>();
+        std::shared_ptr<Scene> level = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight());
         std::shared_ptr<Scene> gameOver = std::make_shared<GameOver>();
         //level->AddObject("player", player);
         //level->AddObject("obstacle_1", obstacle);
         //level->SetOrthoProjMat(0.0f, 800.0f, 0.0f, 800.0f, -1.0f, 1.0f);
-        app.GetEngine().GetSceneManager()->AddScene("basicScene", level);
+        //app.GetEngine().GetSceneManager()->AddScene("basicScene", level);
+        app.AddScene("basicScene", level);
         app.AddScene("gameOver", gameOver);
-        app.GetEngine().GetSceneManager()->SwitchTo("basicScene");
+        //app.GetEngine().GetSceneManager()->SwitchTo("basicScene");
+        app.SetScene("basicScene");
         //Scene& scene = *app.GetEngine().GetSceneManager()->GetCurrentScene();
         //scene.AddObject("player", player);
         //scene.AddObject("obstacle_1", obstacle);
