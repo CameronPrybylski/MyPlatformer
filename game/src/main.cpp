@@ -1,6 +1,7 @@
 #include <Engine/Engine.h>
 #include <Engine/Scene/Application.h>
 #include <Game/Level.h>
+#include <Game/GameOver.h>
 #include <Game/Player.h>
 #include <Game/Obstacle.h>
 #include <iostream>
@@ -29,10 +30,12 @@ int main()
         */
         //std::unique_ptr<Scene> basicScene = std::make_unique<Scene>();
         std::shared_ptr<Scene> level = std::make_shared<Level>();
+        std::shared_ptr<Scene> gameOver = std::make_shared<GameOver>();
         //level->AddObject("player", player);
         //level->AddObject("obstacle_1", obstacle);
         //level->SetOrthoProjMat(0.0f, 800.0f, 0.0f, 800.0f, -1.0f, 1.0f);
         app.GetEngine().GetSceneManager()->AddScene("basicScene", level);
+        app.AddScene("gameOver", gameOver);
         app.GetEngine().GetSceneManager()->SwitchTo("basicScene");
         //Scene& scene = *app.GetEngine().GetSceneManager()->GetCurrentScene();
         //scene.AddObject("player", player);
