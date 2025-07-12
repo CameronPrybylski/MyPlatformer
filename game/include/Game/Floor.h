@@ -9,6 +9,6 @@ public:
     ~Floor();
     void OnEvent(const Input& input) override;
     void Update(float dt) override;
-    void Render(Renderer& renderer, glm::mat4 projection, const Camera& camera) override;
+    void Render(Renderer& renderer, const Camera& camera) override;
 
 };
