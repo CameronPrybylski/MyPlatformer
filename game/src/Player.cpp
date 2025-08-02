@@ -3,11 +3,12 @@
 Player::Player()
 {
     mesh = AssetManager::GetMesh("quadMesh");
-    shaderName = "objectShader";
+    shaderName = "textureShader";
     transform.position = {150.0f, 25.0f, 0.0f};
     transform.scale = {50.0f, 50.0f, 50.0f};
     rigidBody.isStatic = false;
     hp = 3;
+    texture.Create("/Users/cameronprzybylski/Documents/C++/C++ Projects/MyPlatformer/textures/Mario-8bit.png");
 }
 
 Player::~Player()
@@ -64,12 +65,13 @@ void Player::Update(const Input& input, float dt)
 
 void Player::Render(Renderer& renderer, const Camera& camera)
 {
-    renderer.DrawQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), {1.0f, 0.0f, 1.0f, 1.0f});
+    renderer.DrawTexturedQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), texture, {1.0f, 1.0f, 1.0f, 0.0f});
+    texture.Unbind();
 }
 
 void Player::Jump()
 {
-    rigidBody.velocity = {rigidBody.velocity.x, 700.0f, 0.0f};
+    rigidBody.velocity = {rigidBody.velocity.x, 1000.0f, 0.0f};
 }
 
 void Player::Hit(float dt)

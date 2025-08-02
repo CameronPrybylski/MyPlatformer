@@ -7,4 +7,5 @@ public:
     GameOver(){}
     ~GameOver(){}
     void OnUpdate(const Input& input, PhysicsSystem& physics, float dt) override;
+    void LoadPhysics(PhysicsSystem& physics) override;
 };
