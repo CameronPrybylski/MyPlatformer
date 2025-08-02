@@ -7,22 +7,20 @@
 Level::Level(float screenWidth, float screenHeight)
 {
     player = std::make_shared<Player>();
-    //std::shared_ptr<GameObject> player1 = player;
-    /*
-    transform.position = {750.0f, 25.0f, 0.0f};
-    transform.scale = {50.0f, 50.0f, 0.0f};
-    rigidBody.velocity.x = -500.0f;
-    rigidBody.isStatic = false;
-    */
+    
     std::shared_ptr<GameObject> obstacle = std::make_shared<Obstacle>(glm::vec3(750.0f, 25.0f, 0.0f), 
     glm::vec3(50.0f, 50.0f, 0.0f), glm::vec3(-250.0f, 0.0f, 0.0f), false);
+    
     std::shared_ptr<GameObject> obstacle2 = std::make_shared<Obstacle>(glm::vec3(400.0f, 150.0f, 0.0f), 
     glm::vec3(400.0f, 50.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), true);
+    
     std::shared_ptr<GameObject> floor = std::make_shared<Floor>();
+    
     AddObject("player", player);
     AddObject("obstacle_1", obstacle);
     AddObject("obstacle_2", obstacle2);
     AddObject("floor", floor);
+    
     camera.Create(0.0f, screenWidth, 0.0f, screenHeight, -1.0f, 1.0f);
     
     leftScreenEdge = 0.0f;
@@ -49,6 +47,19 @@ void Level::LoadLevel(std::string filepath)
 
 }
 
+void Level::LoadPhysics(PhysicsSystem& physics)
+{
+    glm::vec3 gravity;
+    gravity.x = 0.0f;
+    gravity.z = 0.0f;
+    gravity.y = -1500.0f;
+    physics.SetGravity(gravity);
+    for(auto& obj : objectList)
+    {
+        physics.RegisterBody(obj->transform, obj->rigidBody);
+    }
+}
+
 void Level::OnEvent(const Input &input)
 {
     for(auto& obj : objectList)
@@ -60,7 +71,8 @@ void Level::OnEvent(const Input &input)
 void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
 {
     
-    UpdatePhysics(physics, dt);
+    //UpdatePhysics(physics, dt);
+    physics.Update(dt);
 
     UpdateDynamicObjects(physics, dt);
 
@@ -81,6 +93,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     }
 }
 
+/*
 void Level::UpdatePhysics(PhysicsSystem& physics, float dt)
 {
     for(auto& obj : objectList)
@@ -106,7 +119,7 @@ void Level::UpdatePhysics(PhysicsSystem& physics, float dt)
         }
     }
 }
-
+*/
 void Level::UpdateDynamicObjects(PhysicsSystem& physics, float dt)
 {
     for(auto& dynObj : objectMap)
@@ -123,35 +136,17 @@ void Level::UpdateDynamicObjects(PhysicsSystem& physics, float dt)
 
 void Level::UpdateCamera()
 {
-    //float playerPositionChange = std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
     float playerPositionChangeX = player->transform.position.x - player->rigidBody.previousPosition.x;
-    if(player->transform.position.x >= rightScreenEdge - 300.0f ||
-        (player->transform.position.x <= leftScreenEdge + 300.0f && 
-         player->rigidBody.previousPosition.x - player->transform.position.x > 0 && 
+    if(  player->transform.position.x >= rightScreenEdge - (camera.GetProjMaxX() / 3) ||
+        (player->transform.position.x <= leftScreenEdge  + (camera.GetProjMaxX() / 3) && 
+         player->rigidBody.previousPosition.x - player->transform.position.x > 0      && 
          leftScreenEdge > 0.0f
         ))
     {
-        glm::vec3 cameraPostion = camera.GetPosition();
-        cameraPostion += glm::vec3(playerPositionChangeX, 0.0f, 0.0f);
-        camera.SetPosition(cameraPostion);
-        camera.SetViewMatrix();
-        camera.SetVP();
+        glm::vec3 playerPostionChange(playerPositionChangeX, 0.0f, 0.0f);
+        camera.OnUpdate(playerPostionChange);
         
         rightScreenEdge += playerPositionChangeX;
         leftScreenEdge += playerPositionChangeX;
-        
-        //camera.position.x += std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
-        //rightScreenEdge   += std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
-        //leftScreenEdge    += std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
     }
-    /*
-    if(player->transform.position.x <= leftScreenEdge + 300.0f && player->rigidBody.previousPosition.x - player->transform.position.x > 0 && leftScreenEdge > 0.0f)
-    {
-        camera.position.x += playerPositionChangeX;
-        rightScreenEdge += playerPositionChangeX;
-        leftScreenEdge += playerPositionChangeX;
-        //camera.position.x -= std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
-        //rightScreenEdge   -= std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
-        //leftScreenEdge    -= std::abs(player->rigidBody.previousPosition.x - player->transform.position.x);
-    }*/
 }

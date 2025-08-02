@@ -11,10 +11,11 @@ public:
     ~Level();
 
     void LoadLevel(std::string filepath);
+    void LoadPhysics(PhysicsSystem& physics) override;
     void OnEvent(const Input& input) override;
     void OnUpdate(const Input& input, PhysicsSystem& physics, float dt) override;
 
-    void UpdatePhysics(PhysicsSystem& physics, float dt);
+    //void UpdatePhysics(PhysicsSystem& physics, float dt);
     void UpdateDynamicObjects(PhysicsSystem& physics, float dt);
     void UpdateCamera();
 

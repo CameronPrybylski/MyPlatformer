@@ -4,3 +4,8 @@ void GameOver::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
 {
 
 }
+
+void GameOver::LoadPhysics(PhysicsSystem& physics)
+{
+    
+}
