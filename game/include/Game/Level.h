@@ -7,7 +7,7 @@ class Level : public Scene {
 
 public:
     Level(float screenWidth, float screenHeight, std::string filepath);
-    Level(std::unordered_map<std::string, std::shared_ptr<GameObject>> objects);
+    //Level(std::unordered_map<std::string, std::shared_ptr<GameObject>> objects);
     ~Level();
 
     void Init() override;
@@ -24,8 +24,6 @@ public:
 private:
     float leftScreenEdge;
     float rightScreenEdge;
-    float screenWidth;
-    float screenHeight;
     std::shared_ptr<Player> player;
     bool gameOver = false;
     std::string filepath;
