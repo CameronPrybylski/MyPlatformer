@@ -6,22 +6,8 @@
 
 Level::Level(float screenWidth, float screenHeight, std::string filepath) : Scene(screenWidth, screenHeight), filepath(filepath)
 {
-    //this->screenHeight = screenHeight;
-    //this->screenWidth = screenWidth;
     Init();
 }
-
-/*
-Level::Level(std::unordered_map<std::string, std::shared_ptr<GameObject>> objects)
-{
-    for(auto& obj : objects)
-    {
-        AddObject(obj.first, obj.second);
-    }
-    camera.SetOrthoProjMat(0.0f, 800.0f, 0.0f, 800.0f, -1.0f, 1.0f);
-
-}
-*/
 
 Level::~Level()
 {

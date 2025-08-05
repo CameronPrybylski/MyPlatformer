@@ -3,8 +3,6 @@
 
 GameOver::GameOver(float screenWidth, float screenHeight) : Scene(screenWidth, screenHeight)
 {
-    //this->screenHeight = screenHeight;
-    //this->screenWidth = screenWidth;
     Init();
 }
 
