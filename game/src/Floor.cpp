@@ -4,8 +4,8 @@ Floor::Floor()
 {
     mesh = AssetManager::GetMesh("quadMesh");
     shaderName = "objectShader";
-    transform.position = {1600.0f, 25.0f, 0.0f};
-    transform.scale = {3200.0f, 50.0f, 0.0f};
+    transform.position = {800.0f, 25.0f, 0.0f};
+    transform.scale = {1600.0f, 50.0f, 0.0f};
     rigidBody.isStatic = true;
 }
 

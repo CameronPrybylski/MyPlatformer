@@ -4,7 +4,7 @@ Player::Player()
 {
     mesh = AssetManager::GetMesh("quadMesh");
     shaderName = "textureShader";
-    transform.position = {150.0f, 25.0f, 0.0f};
+    transform.position = {150.0f, 75.0f, 0.0f};
     transform.scale = {50.0f, 50.0f, 50.0f};
     rigidBody.isStatic = false;
     hp = 3;
