@@ -19,12 +19,12 @@ int main()
         auto quadMesh = std::make_shared<QuadMesh>();
         AssetManager::LoadMesh("quadMesh", quadMesh);
         
-        std::shared_ptr<Scene> level = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight());
-        std::shared_ptr<Scene> gameOver = std::make_shared<GameOver>();
+        std::shared_ptr<Scene> level = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyPlatformer/levels/level1.json");
+        std::shared_ptr<Scene> gameOver = std::make_shared<GameOver>(app.GetScreenWidth(), app.GetScreenHeight());
 
-        app.AddScene("basicScene", level);
+        app.AddScene("levelOne", level);
         app.AddScene("gameOver", gameOver);
-        app.SetScene("basicScene");
+        app.SetScene("levelOne");
         
         AssetManager::LoadShader("objectShader", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyPlatformer/shaders/basic.vert", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyPlatformer/shaders/basic.frag");
         AssetManager::LoadShader("textureShader", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyPlatformer/shaders/texture.vert", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyPlatformer/shaders/texture.frag");

@@ -4,8 +4,10 @@
 #include <Game/Floor.h>
 
 
-Level::Level(float screenWidth, float screenHeight)
+Level::Level(float screenWidth, float screenHeight, std::string filepath) : screenHeight(screenHeight), screenWidth(screenWidth), filepath(filepath)
 {
+    Init();
+    /*
     player = std::make_shared<Player>();
     
     std::shared_ptr<GameObject> obstacle = std::make_shared<Obstacle>(glm::vec3(750.0f, 25.0f, 0.0f), 
@@ -25,6 +27,7 @@ Level::Level(float screenWidth, float screenHeight)
     
     leftScreenEdge = 0.0f;
     rightScreenEdge = screenWidth;
+    */
 }
 
 Level::Level(std::unordered_map<std::string, std::shared_ptr<GameObject>> objects)
@@ -42,8 +45,48 @@ Level::~Level()
 
 }
 
+void Level::Init()
+{
+    LoadLevel(filepath);
+}
+
 void Level::LoadLevel(std::string filepath)
 {
+
+    std::ifstream file(filepath);
+    if (!file.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json j;
+    file >> j;
+
+    objectList.clear();
+    objectMap.clear();
+    for (const auto& obst : j["obstacles"]) {
+        std::shared_ptr<GameObject> go;
+        std::string name = obst.value("name", "Unnamed");
+        glm::vec3 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
+        glm::vec3 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
+        glm::vec3 velocity = { obst["velocity"][0], obst["velocity"][1], obst["velocity"][2]};
+        glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
+        bool isStatic = obst.value("isStatic", false);
+        go = std::make_shared<Obstacle>(position, scale, velocity, color, "", isStatic);
+        AddObject(obst.value("name", "Unnamed"), go);
+    }
+    player = nullptr;
+    player = std::make_shared<Player>();
+    std::shared_ptr<GameObject> floor = std::make_shared<Floor>();
+    AddObject("player", player);
+    AddObject("floor", floor);
+    
+    
+    camera.Create(0.0f, screenWidth, 0.0f, screenHeight, -1.0f, 1.0f);
+    
+    leftScreenEdge = 0.0f;
+    rightScreenEdge = screenWidth;
+
+    gameOver = false;
 
 }
 
@@ -70,7 +113,6 @@ void Level::OnEvent(const Input &input)
 
 void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
 {
-    
     //UpdatePhysics(physics, dt);
     physics.Update(dt);
 
@@ -93,33 +135,6 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     }
 }
 
-/*
-void Level::UpdatePhysics(PhysicsSystem& physics, float dt)
-{
-    for(auto& obj : objectList)
-    {   
-        if(!obj->rigidBody.isStatic)
-        {
-            physics.Integrate(obj->transform, obj->rigidBody, dt);
-        }
-    }
-    for(auto& obj : objectList)
-    {
-        if(!obj->rigidBody.isStatic)
-        {
-            for(auto& staticObj : objectList)
-            {
-                if(staticObj->rigidBody.isStatic)
-                //if(staticObj != obj)
-                {   
-                    physics.ResolveCollision(obj->transform, obj->rigidBody, staticObj->transform, staticObj->rigidBody);
-                }
-
-            }            
-        }
-    }
-}
-*/
 void Level::UpdateDynamicObjects(PhysicsSystem& physics, float dt)
 {
     for(auto& dynObj : objectMap)

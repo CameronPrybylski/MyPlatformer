@@ -1,0 +1,29 @@
+{
+    "obstacles" : [
+        {
+            "name": "obstacle1",
+            "position": [750.0, 75.0, 0.0],
+            "scale": [50.0, 50.0, 0.0],
+            "velocity": [-250.0, 0.0, 0.0],
+            "color": [1.0, 0.0, 0.0, 1.0],
+            "isStatic": false
+        },
+        {
+            "name": "obstacle2",
+            "position": [400.0, 150.0, 0.0],
+            "scale": [400.0, 50.0, 0.0],
+            "velocity": [0.0, 0.0, 0.0],
+            "color": [1.0, 0.0, 0.0, 1.0],
+            "isStatic": true
+        }
+    ],
+    "floor" : [
+        {
+            "name": "floor",
+            "position": [400.0, 150.0, 0.0],
+            "scale": [400.0, 50.0, 0.0],
+            "velocity": [0.0, 0.0, 0.0],
+            "isStatic": true
+        }
+    ]
+}

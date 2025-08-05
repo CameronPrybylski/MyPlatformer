@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/engine/external/glad/include",
-                "/opt/homebrew/include/SDL2"
+                "/opt/homebrew/include/SDL2",
+                "${workspaceFolder}/engine/external/nlohmann"
             ],
             "defines": [],
             "cStandard": "c17",
