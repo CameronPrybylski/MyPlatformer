@@ -5,7 +5,7 @@
 class Floor : public GameObject {
 
 public:
-    Floor();
+    Floor(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, bool isStatic);
     ~Floor();
     void OnEvent(const Input& input) override;
     void Update(float dt) override;

@@ -1,12 +1,12 @@
 #include <Game/Floor.h>
 
-Floor::Floor()
+Floor::Floor(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, bool isStatic)
 {
     mesh = AssetManager::GetMesh("quadMesh");
     shaderName = "objectShader";
-    transform.position = {800.0f, 25.0f, 0.0f};
-    transform.scale = {1600.0f, 50.0f, 0.0f};
-    rigidBody.isStatic = true;
+    transform.position = position;
+    transform.scale = scale;
+    rigidBody.isStatic = isStatic;
 }
 
 Floor::~Floor()

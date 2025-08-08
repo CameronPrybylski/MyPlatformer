@@ -16,9 +16,10 @@ public:
     void LoadPhysics(PhysicsSystem& physics) override;
     void OnEvent(const Input& input) override;
     void OnUpdate(const Input& input, PhysicsSystem& physics, float dt) override;
+    void OnCollision(std::vector<CollisionEvent> collisions, float dt);
 
     //void UpdatePhysics(PhysicsSystem& physics, float dt);
-    void UpdateDynamicObjects(PhysicsSystem& physics, float dt);
+
     void UpdateCamera();
 
 private:
