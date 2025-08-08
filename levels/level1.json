@@ -1,29 +1,46 @@
 {
-    "obstacles" : [
-        {
-            "name": "obstacle1",
-            "position": [750.0, 75.0, 0.0],
-            "scale": [50.0, 50.0, 0.0],
-            "velocity": [-250.0, 0.0, 0.0],
-            "color": [1.0, 0.0, 0.0, 1.0],
-            "isStatic": false
-        },
-        {
-            "name": "obstacle2",
-            "position": [400.0, 150.0, 0.0],
-            "scale": [400.0, 50.0, 0.0],
-            "velocity": [0.0, 0.0, 0.0],
-            "color": [1.0, 0.0, 0.0, 1.0],
-            "isStatic": true
-        }
-    ],
-    "floor" : [
-        {
-            "name": "floor",
-            "position": [400.0, 150.0, 0.0],
-            "scale": [400.0, 50.0, 0.0],
-            "velocity": [0.0, 0.0, 0.0],
-            "isStatic": true
-        }
-    ]
+    "objects" : {
+        "obstacles" : [
+            {
+                "name": "obstacle1",
+                "position": [750.0, 75.0, 0.0],
+                "scale": [50.0, 50.0, 0.0],
+                "velocity": [-250.0, 0.0, 0.0],
+                "color": [1.0, 0.0, 0.0, 1.0],
+                "isStatic": false,
+                "texturePath" : ""
+            },
+            {
+                "name": "obstacle2",
+                "position": [400.0, 150.0, 0.0],
+                "scale": [400.0, 50.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 0.0, 0.0, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            }
+        ],
+        "floor" : [
+            {
+                "name": "floor",
+                "position": [800.0, 25.0, 0.0],
+                "scale": [1600.0, 50.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 0.0, 0.0, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            }
+        ],
+        "player" : [
+            {
+                "name": "player",
+                "position": [150.0, 75.0, 0.0],
+                "scale": [50.0, 50.0, 50.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 0.0, 0.0, 1.0],
+                "isStatic": false,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyPlatformer/textures/Mario-8bit.png"
+            }
+        ]
+    }
 }

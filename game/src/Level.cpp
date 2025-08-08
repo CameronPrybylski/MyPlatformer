@@ -32,23 +32,33 @@ void Level::LoadLevel(std::string filepath)
 
     objectList.clear();
     objectMap.clear();
-    for (const auto& obst : j["obstacles"]) {
-        std::shared_ptr<GameObject> go;
-        std::string name = obst.value("name", "Unnamed");
-        glm::vec3 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
-        glm::vec3 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
-        glm::vec3 velocity = { obst["velocity"][0], obst["velocity"][1], obst["velocity"][2]};
-        glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
-        bool isStatic = obst.value("isStatic", false);
-        go = std::make_shared<Obstacle>(position, scale, velocity, color, "", isStatic);
-        AddObject(obst.value("name", "Unnamed"), go);
-    }
     player = nullptr;
-    player = std::make_shared<Player>();
-    std::shared_ptr<GameObject> floor = std::make_shared<Floor>();
-    AddObject("player", player);
-    AddObject("floor", floor);
-    
+    for (const auto& objs : j["objects"].items()) {
+        for(const auto& obst : objs.value()){
+            std::shared_ptr<GameObject> go;
+            std::string name = obst.value("name", "Unnamed");
+            glm::vec3 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
+            glm::vec3 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
+            glm::vec3 velocity = { obst["velocity"][0], obst["velocity"][1], obst["velocity"][2]};
+            glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
+            bool isStatic = obst.value("isStatic", false);
+            std::string texturePath = obst.value("texturePath", "Unnamed");
+            
+            if(objs.key() == "obstacles"){
+                go = std::make_shared<Obstacle>(position, scale, velocity, color, "", isStatic);
+                AddObject(obst.value("name", "Unnamed"), go);
+            }
+            else if(objs.key() == "floor"){
+                go = std::make_shared<Floor>(position, scale, color, "", isStatic);
+                AddObject(obst.value("name", "Unnamed"), go);
+            }
+            else if(objs.key() == "player"){
+                player = std::make_shared<Player>(position, scale, color, texturePath, isStatic);
+                go = player;
+                AddObject(obst.value("name", "Unnamed"), go);
+            }
+        }
+    }
     
     camera.Create(0.0f, screenWidth, 0.0f, screenHeight, -1.0f, 1.0f);
     
@@ -83,9 +93,9 @@ void Level::OnEvent(const Input &input)
 void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
 {
     //UpdatePhysics(physics, dt);
-    physics.Update(dt);
+    std::vector<CollisionEvent> collisions = physics.Update(dt);
+    OnCollision(collisions, dt);
 
-    UpdateDynamicObjects(physics, dt);
 
     UpdateCamera();
 
@@ -104,16 +114,13 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     }
 }
 
-void Level::UpdateDynamicObjects(PhysicsSystem& physics, float dt)
+void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
 {
-    for(auto& dynObj : objectMap)
+    for(auto& collision : collisions)
     {
-        if(!dynObj.second->rigidBody.isStatic && dynObj.second != player)
+        if(*collision.body1.transform == player->transform || *collision.body2.transform == player->transform)
         {
-            if(physics.CheckCollision(player->transform, dynObj.second->transform))
-            {
-                player->Hit(dt);
-            }
+            player->OnCollision(dt);
         }
     }
 }

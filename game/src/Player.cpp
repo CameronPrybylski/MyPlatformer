@@ -1,12 +1,12 @@
 #include <Game/Player.h>
 
-Player::Player()
+Player::Player(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, bool isStatic)
 {
     mesh = AssetManager::GetMesh("quadMesh");
     shaderName = "textureShader";
-    transform.position = {150.0f, 75.0f, 0.0f};
-    transform.scale = {50.0f, 50.0f, 50.0f};
-    rigidBody.isStatic = false;
+    transform.position = position;
+    transform.scale = scale;
+    rigidBody.isStatic = isStatic;
     hp = 3;
     texture.Create("/Users/cameronprzybylski/Documents/C++/C++ Projects/MyPlatformer/textures/Mario-8bit.png");
 }
@@ -61,6 +61,11 @@ void Player::Update(const Input& input, float dt)
     if(transform.position.x - transform.scale.x / 2 < 0.0f){
         transform.position.x = 0.0f + transform.scale.x / 2;
     }
+}
+
+void Player::OnCollision(float dt)
+{
+    Hit(dt);
 }
 
 void Player::Render(Renderer& renderer, const Camera& camera)
