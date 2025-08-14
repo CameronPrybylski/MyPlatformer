@@ -1,5 +1,4 @@
 #include <Game/Level.h>
-#include <Game/Player.h>
 #include <Game/Obstacle.h>
 #include <Game/Floor.h>
 
@@ -33,6 +32,9 @@ void Level::LoadLevel(std::string filepath)
     objectList.clear();
     objectMap.clear();
     player = nullptr;
+    //std::cout << j["levelParams"]["completionDist"] << std::endl;
+    completionDist = j["levelParams"]["completionDist"];
+    nextLevel = j["levelParams"]["nextLevel"];
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
             std::shared_ptr<GameObject> go;
@@ -45,17 +47,23 @@ void Level::LoadLevel(std::string filepath)
             std::string texturePath = obst.value("texturePath", "Unnamed");
             
             if(objs.key() == "obstacles"){
-                go = std::make_shared<Obstacle>(position, scale, velocity, color, "", isStatic);
+                go = std::make_shared<Obstacle>(position, scale, velocity, color, "", name, isStatic);
                 AddObject(obst.value("name", "Unnamed"), go);
             }
             else if(objs.key() == "floor"){
-                go = std::make_shared<Floor>(position, scale, color, "", isStatic);
+                go = std::make_shared<Floor>(position, scale, color, "", name, isStatic);
                 AddObject(obst.value("name", "Unnamed"), go);
             }
             else if(objs.key() == "player"){
-                player = std::make_shared<Player>(position, scale, color, texturePath, isStatic);
+                player = std::make_shared<Player>(position, scale, color, texturePath, name, isStatic);
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
+            }
+            else if(objs.key() == "enemies"){
+                std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(position, scale, velocity, color, "", name, isStatic);
+                go = enemy;
+                AddObject(obst.value("name", "Unnamed"), go);
+                enemies.push_back(enemy);
             }
         }
     }
@@ -94,7 +102,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
 {
     //UpdatePhysics(physics, dt);
     std::vector<CollisionEvent> collisions = physics.Update(dt);
-    OnCollision(collisions, dt);
+    OnCollision(physics, collisions, dt);
 
 
     UpdateCamera();
@@ -112,15 +120,49 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     {
         EndScene("gameOver");
     }
+    if(player->transform.position.x + player->transform.scale.x >= completionDist){
+        EndScene(nextLevel);
+    }
 }
 
-void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
+void Level::OnCollision(PhysicsSystem& physics, std::vector<CollisionEvent> collisions, float dt)
 {
     for(auto& collision : collisions)
     {
-        if(*collision.body1.transform == player->transform || *collision.body2.transform == player->transform)
+        //std::cout << collision.body1.transform->position.x << " " << collision.body2.transform->position.x << std::endl;
+        if((*collision.body1.transform == player->transform || *collision.body2.transform == player->transform) && !player->hit)
         {
-            player->OnCollision(dt);
+            glm::vec2 normalBody1;
+            glm::vec2 normalBody2;
+            if(*collision.body1.transform == player->transform)
+            {
+                //normal = physics.GetCollisionNormal(player->transform, *collision.body2.transform);
+            }else{
+                //normal = physics.GetCollisionNormal(player->transform, *collision.body1.transform);
+            }
+
+            // Player lands on top
+            //if(normal.x == 0 && normal.y == 1)
+            {
+                for(auto& obj : objectList)
+                {
+                    if(obj != player && (*collision.body1.transform == obj->transform || *collision.body2.transform == obj->transform))
+                    {
+                        if(*collision.body1.transform == obj->transform)
+                        {
+                            normalBody1 = collision.collisionNormalBody1;
+                            normalBody2 = collision.collisionNormalBody2;
+                        }
+                        if(*collision.body2.transform == obj->transform)
+                        {
+                            normalBody1 = collision.collisionNormalBody2;
+                            normalBody2 = collision.collisionNormalBody1;
+                        }
+                        obj->OnCollision(player, normalBody1, dt);
+                        player->OnCollision(obj, normalBody2, dt);
+                    }
+                }
+            }
         }
     }
 }
