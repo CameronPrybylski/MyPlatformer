@@ -6,7 +6,7 @@
                 "position": [800.0, 150.0, 0.0],
                 "scale": [200.0, 50.0, 0.0],
                 "velocity": [-100.0, 0.0, 0.0],
-                "color": [1.0, 0.0, 0.0, 1.0],
+                "color": [0.0, 0.0, 1.0, 1.0],
                 "isStatic": true,
                 "texturePath" : ""
             },
@@ -15,7 +15,7 @@
                 "position": [400.0, 150.0, 0.0],
                 "scale": [400.0, 50.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 0.0, 0.0, 1.0],
+                "color": [0.0, 0.0, 1.0, 1.0],
                 "isStatic": true,
                 "texturePath" : ""
             }
@@ -48,7 +48,7 @@
                 "position": [750.0, 75.0, 0.0],
                 "scale": [50.0, 50.0, 0.0],
                 "velocity": [-250.0, 0.0, 0.0],
-                "color": [0.0, 0.0, 1.0, 1.0],
+                "color": [1.0, 0.0, 0.0, 1.0],
                 "isStatic": false,
                 "texturePath" : ""
             }
@@ -56,6 +56,6 @@
     },
     "levelParams" : {
         "completionDist" : 1700.0,
-        "nextLevel" : "levelTwo"
+        "nextLevel" : "levelOne"
     }
 }
