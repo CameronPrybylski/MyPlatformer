@@ -24,8 +24,6 @@ public:
     void UpdateCamera();
 
 private:
-    float leftScreenEdge;
-    float rightScreenEdge;
     std::shared_ptr<Player> player;
     std::vector<std::shared_ptr<Enemy>> enemies; 
     bool gameOver = false;

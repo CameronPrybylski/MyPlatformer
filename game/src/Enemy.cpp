@@ -12,6 +12,7 @@ Enemy::Enemy(glm::vec3 position, glm::vec3 scale, glm::vec3 velocity, glm::vec4 
     this->isAlive = true;
     this->name = name;
     this->type = "Enemy";
+    this->velocity = velocity;
     if(texturePath != ""){
         shaderName = "textureShader";
         texture.Create(texturePath);
@@ -45,11 +46,11 @@ void Enemy::Update(const Input &input, float dt)
 {
     if(transform.position.x - transform.scale.x / 2 < 0.0f)
     {
-        rigidBody.velocity.x *= -1;
+        //rigidBody.velocity.x *= -1;
     }
     if(transform.position.x > 800.0f)
     {
-        rigidBody.velocity.x *= -1;
+        //rigidBody.velocity.x *= -1;
     }
     if(!isAlive)
     {
@@ -65,11 +66,20 @@ void Enemy::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 colli
             isAlive = false;
         }
     }
+    if(collisionNormal.x == 1 && collisionNormal.y == 0)
+    {
+        rigidBody.velocity.x = abs(velocity.x);
+    }
+    if(collisionNormal.x == -1 && collisionNormal.y == 0)
+    {
+        rigidBody.velocity.x = -abs(velocity.x);
+    }
 }
 
 void Enemy::Render(Renderer &renderer, const Camera &camera)
 {
-    if(isAlive){
+    if(isAlive)
+    {
         if(shaderName == "textureShader"){
             renderer.DrawTexturedQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), texture, color);
         }else{

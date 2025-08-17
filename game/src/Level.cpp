@@ -86,7 +86,7 @@ void Level::LoadPhysics(PhysicsSystem& physics)
     physics.SetGravity(gravity);
     for(auto& obj : objectList)
     {
-        physics.RegisterBody(obj->transform, obj->rigidBody);
+        physics.RegisterBody(obj->transform, obj->rigidBody, obj->name);
     }
 }
 
@@ -103,7 +103,6 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     //UpdatePhysics(physics, dt);
     std::vector<CollisionEvent> collisions = physics.Update(dt);
     OnCollision(physics, collisions, dt);
-
 
     UpdateCamera();
 
@@ -129,40 +128,18 @@ void Level::OnCollision(PhysicsSystem& physics, std::vector<CollisionEvent> coll
 {
     for(auto& collision : collisions)
     {
-        //std::cout << collision.body1.transform->position.x << " " << collision.body2.transform->position.x << std::endl;
-        if((*collision.body1.transform == player->transform || *collision.body2.transform == player->transform) && !player->hit)
-        {
-            glm::vec2 normalBody1;
-            glm::vec2 normalBody2;
-            if(*collision.body1.transform == player->transform)
-            {
-                //normal = physics.GetCollisionNormal(player->transform, *collision.body2.transform);
-            }else{
-                //normal = physics.GetCollisionNormal(player->transform, *collision.body1.transform);
-            }
+        auto& obj1 = objectMap[collision.body1.id];
+        auto& obj2 = objectMap[collision.body2.id];
 
-            // Player lands on top
-            //if(normal.x == 0 && normal.y == 1)
-            {
-                for(auto& obj : objectList)
-                {
-                    if(obj != player && (*collision.body1.transform == obj->transform || *collision.body2.transform == obj->transform))
-                    {
-                        if(*collision.body1.transform == obj->transform)
-                        {
-                            normalBody1 = collision.collisionNormalBody1;
-                            normalBody2 = collision.collisionNormalBody2;
-                        }
-                        if(*collision.body2.transform == obj->transform)
-                        {
-                            normalBody1 = collision.collisionNormalBody2;
-                            normalBody2 = collision.collisionNormalBody1;
-                        }
-                        obj->OnCollision(player, normalBody1, dt);
-                        player->OnCollision(obj, normalBody2, dt);
-                    }
-                }
-            }
+        if(!collision.body1.rigidBody->isStatic && collision.body2.rigidBody->isStatic)
+        {
+            obj2->OnCollision(obj1, collision.collisionNormalBody2, dt);
+            obj1->OnCollision(obj2, collision.collisionNormalBody1, dt);
+        }
+        else
+        {
+            obj1->OnCollision(obj2, collision.collisionNormalBody1, dt);
+            obj2->OnCollision(obj1, collision.collisionNormalBody2, dt);
         }
     }
 }

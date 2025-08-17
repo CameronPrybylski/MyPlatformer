@@ -17,4 +17,5 @@ public:
 
 private:
     bool isAlive;
+    glm::vec3 velocity;
 };
