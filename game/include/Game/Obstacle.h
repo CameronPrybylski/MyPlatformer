@@ -14,7 +14,7 @@ public:
     void Render(Renderer& renderer, const Camera& camera) override;
     void OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt) override;
 
-    //glm::vec3 velocity{0.0f};
+    glm::vec3 velocity;
 
 
 };

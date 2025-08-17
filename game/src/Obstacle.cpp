@@ -10,6 +10,7 @@ Obstacle::Obstacle(glm::vec3 position, glm::vec3 scale, glm::vec3 velocity, glm:
     rigidBody.isStatic = isStatic;
     this->color = color;
     this->name = name;
+    this->velocity = velocity;
     if(texturePath != ""){
         shaderName = "textureShader";
         texture.Create(texturePath);
@@ -31,11 +32,12 @@ void Obstacle::Update(const Input& input, float dt)
 {
     //transform.position.x += rigidBody.velocity.x * dt;
     //std::cout << rigidBody.velocity.x << std::endl;
-    transform.position.y = 150.0f;
+    //transform.position.y = 150.0f;
     //if(transform.position.x - transform.scale.x / 2 < 0.0f)
+    //rigidBody.velocity = this->velocity;
     if(transform.position.x - (transform.scale.x / 2) < 600.0f)
     {
-        rigidBody.velocity.x *= -1;
+        //rigidBody.velocity.x *= -1;
     }
     if(transform.position.x > 1600.0f)
     {
@@ -46,7 +48,19 @@ void Obstacle::Update(const Input& input, float dt)
 
 void Obstacle::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
 {
-    collidedObj->rigidBody.velocity.x = rigidBody.velocity.x;
+    if(!collidedObj->rigidBody.isStatic)
+    {
+        collidedObj->rigidBody.velocity.x = rigidBody.velocity.x;
+    }
+    
+    if(collisionNormal.x == 1 && collisionNormal.y == 0)
+    {
+        rigidBody.velocity.x = abs(velocity.x);
+    }
+    if(collisionNormal.x == -1 && collisionNormal.y == 0)
+    {
+        rigidBody.velocity.x = -1 * abs(velocity.x);
+    }
 }
 
 void Obstacle::Render(Renderer &renderer, const Camera& camera)
