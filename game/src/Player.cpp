@@ -23,10 +23,18 @@ void Player::OnEvent(const Input& input)
     if(input.IsKeyDown("D") && !jumping && !hit)
     {
         rigidBody.velocity.x = 300.0f;
+        if(input.IsKeyDown("C"))
+        {
+            rigidBody.velocity.x = 600.0f;
+        }
     }
     else if(input.IsKeyDown("A") && !jumping && !hit)
     {
         rigidBody.velocity.x = -300.0f;
+        if(input.IsKeyDown("C"))
+        {
+            rigidBody.velocity.x = -600.0f;
+        }
     }
     else if(!jumping && !riding){
         rigidBody.velocity.x = 0;
@@ -60,16 +68,24 @@ void Player::Update(const Input& input, float dt)
         {
             riding = false;
             rigidBody.velocity.x = 300.0f;
+            if(input.IsKeyDown("C"))
+            {
+                rigidBody.velocity.x = 600.0f;
+            }
         }
         else if(input.IsKeyDown("A") && !jumping && !hit)
         {
             riding = false;
             rigidBody.velocity.x = -300.0f;
+            if(input.IsKeyDown("C"))
+            {
+                rigidBody.velocity.x = -600.0f;
+            }
         }
     }
     if(transform.position.y >= 800)
     {
-        transform.position.y = 800.0f;
+        //transform.position.y = 800.0f;
     }if(transform.position.y < 0.0f || hp <= 0){
         alive = false;
     }

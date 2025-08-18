@@ -44,14 +44,6 @@ void Enemy::Update(float dt)
 
 void Enemy::Update(const Input &input, float dt)
 {
-    if(transform.position.x - transform.scale.x / 2 < 0.0f)
-    {
-        //rigidBody.velocity.x *= -1;
-    }
-    if(transform.position.x > 800.0f)
-    {
-        //rigidBody.velocity.x *= -1;
-    }
     if(!isAlive)
     {
         transform.position.y = -500.0f;
