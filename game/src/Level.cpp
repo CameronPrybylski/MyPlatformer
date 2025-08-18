@@ -41,13 +41,15 @@ void Level::LoadLevel(std::string filepath)
             std::string name = obst.value("name", "Unnamed");
             glm::vec3 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
             glm::vec3 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
+            glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
             glm::vec3 velocity = { obst["velocity"][0], obst["velocity"][1], obst["velocity"][2]};
             glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
             bool isStatic = obst.value("isStatic", false);
             std::string texturePath = obst.value("texturePath", "Unnamed");
             
             if(objs.key() == "obstacles"){
-                go = std::make_shared<Obstacle>(position, scale, velocity, color, "", name, isStatic);
+                glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
+                go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, "", name, isStatic);
                 AddObject(obst.value("name", "Unnamed"), go);
             }
             else if(objs.key() == "floor"){
@@ -72,6 +74,8 @@ void Level::LoadLevel(std::string filepath)
     
     leftScreenEdge = 0.0f;
     rightScreenEdge = screenWidth;
+    bottomScreenEdge = 0.0f;
+    topScreenEdge = screenHeight;
 
     gameOver = false;
 
@@ -102,7 +106,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
 {
     //UpdatePhysics(physics, dt);
     std::vector<CollisionEvent> collisions = physics.Update(dt);
-    OnCollision(physics, collisions, dt);
+    OnCollision(collisions, dt);
 
     UpdateCamera();
 
@@ -124,7 +128,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     }
 }
 
-void Level::OnCollision(PhysicsSystem& physics, std::vector<CollisionEvent> collisions, float dt)
+void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
 {
     for(auto& collision : collisions)
     {
@@ -147,16 +151,29 @@ void Level::OnCollision(PhysicsSystem& physics, std::vector<CollisionEvent> coll
 void Level::UpdateCamera()
 {
     float playerPositionChangeX = player->transform.position.x - player->rigidBody.previousPosition.x;
+    float playerPositionChangeY = player->transform.position.y - player->rigidBody.previousPosition.y;
+    glm::vec3 playerPositionChange(0.0f);
     if(  player->transform.position.x >= rightScreenEdge - (camera.GetProjMaxX() / 3) ||
         (player->transform.position.x <= leftScreenEdge  + (camera.GetProjMaxX() / 3) && 
          player->rigidBody.previousPosition.x - player->transform.position.x > 0      && 
          leftScreenEdge > 0.0f
         ))
     {
-        glm::vec3 playerPostionChange(playerPositionChangeX, 0.0f, 0.0f);
-        camera.OnUpdate(playerPostionChange);
+        playerPositionChange.x = playerPositionChangeX;
         
         rightScreenEdge += playerPositionChangeX;
         leftScreenEdge += playerPositionChangeX;
     }
+    if(  player->transform.position.y >= topScreenEdge - (camera.GetProjMaxY() / 3) ||
+        (player->transform.position.y <= bottomScreenEdge  + (camera.GetProjMaxY() / 3) && 
+         player->rigidBody.previousPosition.y - player->transform.position.y > 0      && 
+         bottomScreenEdge > 0.0f
+        ))
+    {
+        //playerPositionChange.y = playerPositionChangeY;
+        
+        //topScreenEdge += playerPositionChangeY;
+        //bottomScreenEdge += playerPositionChangeY;
+    }
+    camera.OnUpdate(playerPositionChange);
 }

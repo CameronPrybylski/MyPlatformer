@@ -17,7 +17,7 @@ public:
     void LoadPhysics(PhysicsSystem& physics) override;
     void OnEvent(const Input& input) override;
     void OnUpdate(const Input& input, PhysicsSystem& physics, float dt) override;
-    void OnCollision(PhysicsSystem& physics, std::vector<CollisionEvent> collisions, float dt);
+    void OnCollision(std::vector<CollisionEvent> collisions, float dt);
 
     //void UpdatePhysics(PhysicsSystem& physics, float dt);
 

@@ -6,7 +6,7 @@
 class Obstacle : public GameObject {
 
 public:
-    Obstacle(glm::vec3 position, glm::vec3 scale, glm::vec3 velocity, glm::vec4 color, std::string texturePath, std::string name, bool isStatic);
+    Obstacle(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation, glm::vec3 velocity, glm::vec4 color, std::string texturePath, std::string name, bool isStatic);
     ~Obstacle();
 
     void OnEvent(const Input& input) override;

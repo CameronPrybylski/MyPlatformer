@@ -15,9 +15,6 @@ public:
     void Jump();
     void Hit(float dt);
 
-    //glm::vec3 velocity{0.0f};
-    glm::vec3 gravity{0.0f, -981.0f, 0.0f};
-
     bool jumping;
     bool riding = false;
     bool hit = false;
