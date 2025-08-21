@@ -70,13 +70,23 @@
                 "color": [0.0, 0.0, 1.0, 1.0],
                 "isStatic": true,
                 "texturePath" : ""
+            },
+            {
+                "name": "obstacle8",
+                "position": [-5.0, 400.0, 0.0],
+                "scale": [10.0, 800.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
             }
         ],
         "floor" : [
             {
                 "name": "floor",
-                "position": [800.0, 25.0, 0.0],
-                "scale": [1600.0, 50.0, 0.0],
+                "position": [1600.0, 25.0, 0.0],
+                "scale": [3200.0, 50.0, 0.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [0.0, 1.0, 0.0, 0.7],
@@ -120,7 +130,7 @@
         ]
     },
     "levelParams" : {
-        "completionDist" : 1700.0,
+        "completionDist" : 3500.0,
         "nextLevel" : "levelTwo"
     }
 }
