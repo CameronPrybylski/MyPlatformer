@@ -89,9 +89,6 @@ void Player::Update(const Input& input, float dt)
     }if(transform.position.y < 0.0f || hp <= 0){
         alive = false;
     }
-    if(transform.position.x - transform.scale.x / 2 < 0.0f){
-        transform.position.x = 0.0f + transform.scale.x / 2;
-    }
 }
 
 void Player::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
