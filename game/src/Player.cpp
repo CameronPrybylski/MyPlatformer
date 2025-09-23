@@ -23,7 +23,7 @@ void Player::OnEvent(const Input& input)
     if(input.IsKeyDown("D") && !jumping && !hit)
     {
         rigidBody.velocity.x = 300.0f;
-        if(input.IsKeyDown("C"))
+        if(input.IsKeyDown("L"))
         {
             rigidBody.velocity.x = 600.0f;
         }
@@ -31,7 +31,7 @@ void Player::OnEvent(const Input& input)
     else if(input.IsKeyDown("A") && !jumping && !hit)
     {
         rigidBody.velocity.x = -300.0f;
-        if(input.IsKeyDown("C"))
+        if(input.IsKeyDown("L"))
         {
             rigidBody.velocity.x = -600.0f;
         }
@@ -68,7 +68,7 @@ void Player::Update(const Input& input, float dt)
         {
             riding = false;
             rigidBody.velocity.x = 300.0f;
-            if(input.IsKeyDown("C"))
+            if(input.IsKeyDown("L"))
             {
                 rigidBody.velocity.x = 600.0f;
             }
@@ -77,7 +77,7 @@ void Player::Update(const Input& input, float dt)
         {
             riding = false;
             rigidBody.velocity.x = -300.0f;
-            if(input.IsKeyDown("C"))
+            if(input.IsKeyDown("L"))
             {
                 rigidBody.velocity.x = -600.0f;
             }
