@@ -67,6 +67,11 @@ void Level::LoadLevel(std::string filepath)
                 AddObject(obst.value("name", "Unnamed"), go);
                 enemies.push_back(enemy);
             }
+            else if(objs.key() == "background"){
+                glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
+                go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
+                AddObject(obst.value("name", "Unnamed"), go);
+            }
         }
     }
     
